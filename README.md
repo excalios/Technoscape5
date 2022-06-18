@@ -6,7 +6,7 @@
 2. copy `.env.example` to `.env` and seed accordingly
 3. run `docker-compose up`
 
-## Building and Serving
+## Testing
 
 1. run `npm install`
 2. copy `.env.example` to `.env` and seed accordingly
