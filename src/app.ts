@@ -18,7 +18,16 @@ import db from './db';
 
 app.use(cors());
 app.use(compression());
-app.use(helmet());
+
+// Fix swagger docs white screen
+const cspDefaults = helmet.contentSecurityPolicy.getDefaultDirectives();
+delete cspDefaults['upgrade-insecure-requests'];
+
+app.use(
+    helmet({
+        contentSecurityPolicy: { directives: cspDefaults },
+    }),
+);
 app.use(morgan('dev'));
 app.use(express.json());
 
