@@ -21,7 +21,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 const swaggerDocument = YAML.load('src/openapi.yaml');
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(responses);
 
