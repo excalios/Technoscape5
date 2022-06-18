@@ -16,6 +16,8 @@ const app = express();
 
 import db from './db';
 
+import ApiRouter from './api';
+
 const swaggerDocument = YAML.load('src/openapi.yaml');
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -35,6 +37,8 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 app.use(responses);
+
+app.use('/api/v1', ApiRouter);
 
 app.get('/checkhealth', (_req: Request, res: Response) => {
     res.success({
