@@ -1,0 +1,37 @@
+version: '3.7'
+services:
+    db:
+        image: postgres
+        restart: always
+        volumes:
+            - ./docker-data/db-data:/var/lib/postgresql/data:z
+        environment:
+            POSTGRES_DB: ${DB_DATABASE}
+            POSTGRES_USER: ${DB_USER}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+        ports:
+            - 5432:5432
+    adminer:
+        depends_on:
+            - db
+        image: adminer
+        restart: always
+        ports:
+            - 8080:8080
+    api:
+        restart: always
+        depends_on:
+            - db
+        links:
+            - db
+        build: .
+        volumes:
+            - ./:/app
+        ports:
+            - ${API_PORT}:${API_PORT}
+        environment:
+            API_PORT: ${API_PORT}
+            DB_HOST: "db"
+            DB_DATABASE: ${DB_DATABASE}
+            DB_USER: ${DB_USER}
+            DB_PASSWORD: ${DB_PASSWORD}
