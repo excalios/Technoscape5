@@ -22,10 +22,10 @@ router.post('/calculate', (req: Request, res: Response) => {
 
     // Push every item to user with according prices
     req.body.items.forEach((item: any) => {
-        item.payee.forEach((payee: number) => {
-            result[payee].items.push({
+        item.payer.forEach((payer: number) => {
+            result[payer].items.push({
                 name: item.name,
-                price: item.total_price / item.payee.length,
+                price: item.total_price / item.payer.length,
             });
         });
     });

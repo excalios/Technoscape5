@@ -65,6 +65,9 @@ paths:
                         schema:
                             type: object
                             properties:
+                                title:
+                                    description: the transaction title
+                                    type: string
                                 users:
                                     type: array
                                     items:
@@ -78,7 +81,7 @@ paths:
                                                 type: string
                                             total_price:
                                                 type: number
-                                            payee:
+                                            payer:
                                                 description: an array of index of users that pays
                                                 type: array
                                                 items:

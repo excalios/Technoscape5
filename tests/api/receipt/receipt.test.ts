@@ -13,17 +13,17 @@ describe('Price Distribute Calculation', () => {
                     {
                         name: 'Ramen 1',
                         total_price: 30_000,
-                        payee: [0, 1, 3],
+                        payer: [0, 1, 3],
                     },
                     {
                         name: 'Ramen 2',
                         total_price: 30_000,
-                        payee: [2],
+                        payer: [2],
                     },
                     {
                         name: 'Es Teh',
                         total_price: 40_000,
-                        payee: [0, 1, 2, 3],
+                        payer: [0, 1, 2, 3],
                     },
                 ],
                 subtotal: 100_000,
