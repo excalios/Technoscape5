@@ -5,6 +5,7 @@ import type { Request, Response, NextFunction } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import compression from 'compression';
+import cors from 'cors';
 
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
@@ -15,6 +16,7 @@ const app = express();
 
 import db from './db';
 
+app.use(cors());
 app.use(compression());
 app.use(helmet());
 app.use(morgan('dev'));
