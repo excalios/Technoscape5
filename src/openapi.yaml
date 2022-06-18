@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.0/schema.json
+openapi: 3.0.3
+info:
+  description: |-
+    This is API Documentation for Patungin.id
+  version: "0.1"
+  title: Patunginid - 0.1
+
+paths:
+  /checkhealth:
+      get:
+          description: Check health api connection
+          responses:
+              200:
+                  description: Successfully returns a message
+                  content:
+                      application/json:
+                          schema:
+                              type: object
+                              properties:
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    status:
+                                        type: number
+                                        example: 200
+                                    data:
+                                        type: object
+                                        properties:
+                                            message:
+                                                type: string
+                                                example: "Negative"
+
+  /checkhealth-db:
+      get:
+          description: Check health api db connection
+          responses:
+              200:
+                  description: Successfully returns a message
+                  content:
+                      application/json:
+                          schema:
+                              type: object
+                              properties:
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    status:
+                                        type: number
+                                        example: 200
+                                    data:
+                                        type: object
+                                        properties:
+                                            message:
+                                                type: number
+                                                example: 4
+
+
+components:
+
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        status:
+          type: number
+
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

@@ -6,6 +6,9 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import compression from 'compression';
 
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
+
 import { errorHandler, notFound, responses } from './middlewares';
 
 const app = express();
@@ -16,6 +19,9 @@ app.use(compression());
 app.use(helmet());
 app.use(morgan('dev'));
 app.use(express.json());
+
+const swaggerDocument = YAML.load('src/openapi.yaml');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(responses);
 
