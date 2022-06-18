@@ -16,6 +16,9 @@ const app = express();
 
 import db from './db';
 
+const swaggerDocument = YAML.load('src/openapi.yaml');
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 app.use(cors());
 app.use(compression());
 
@@ -30,9 +33,6 @@ app.use(
 );
 app.use(morgan('dev'));
 app.use(express.json());
-
-const swaggerDocument = YAML.load('src/openapi.yaml');
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(responses);
 
