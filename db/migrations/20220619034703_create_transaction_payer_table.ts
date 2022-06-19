@@ -23,7 +23,7 @@ export async function up(knex: Knex): Promise<void> {
         table.string('destination_bank_code').nullable();
         table.string('va_account').nullable();
         table.string('status').defaultTo('Pending');
-        table.timestamps(true);
+        table.timestamps(true, true);
     });
 }
 

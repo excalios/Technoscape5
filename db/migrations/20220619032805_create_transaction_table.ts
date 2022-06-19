@@ -12,7 +12,7 @@ export async function up(knex: Knex): Promise<void> {
         table.decimal('other_price');
         table.decimal('discount');
         table.decimal('total_price');
-        table.timestamps(true);
+        table.timestamps(true, true);
     });
 }
 

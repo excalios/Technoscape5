@@ -14,7 +14,7 @@ export async function up(knex: Knex): Promise<void> {
             .notNullable();
         table.string('name');
         table.decimal('price');
-        table.timestamps(true);
+        table.timestamps(true, true);
     });
 }
 
