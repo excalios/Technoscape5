@@ -12,9 +12,6 @@ export async function up(knex: Knex): Promise<void> {
         table.decimal('other_price');
         table.decimal('discount');
         table.decimal('total_price');
-        table.string('destination_account_name');
-        table.string('destination_account_number');
-        table.string('destination_bank_code');
         table.timestamps(true);
     });
 }

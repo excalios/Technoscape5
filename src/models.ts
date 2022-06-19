@@ -17,12 +17,6 @@ export class Transaction extends Model {
 
     total_price!: number;
 
-    destination_account_name!: string;
-
-    destination_account_number!: string;
-
-    destination_bank_code!: string;
-
     static tableName = tableNames.transaction;
 
     static jsonSchema = {
@@ -61,15 +55,6 @@ export class Transaction extends Model {
             total_price: {
                 type: 'number',
             },
-            destination_account_name: {
-                type: 'string',
-            },
-            destination_account_number: {
-                type: 'string',
-            },
-            destination_bank_code: {
-                type: 'string',
-            },
         },
     };
 
@@ -99,6 +84,16 @@ export class Payer extends Model {
     discount!: number;
 
     total_price!: number;
+
+    destination_account_name?: string;
+
+    destination_account_number?: string;
+
+    destination_bank_code?: string;
+
+    va_account?: string;
+
+    status!: string;
 
     static tableName = tableNames.transaction_payer;
 
@@ -134,6 +129,22 @@ export class Payer extends Model {
             },
             total_price: {
                 type: 'number',
+            },
+            destination_account_name: {
+                type: 'string',
+            },
+            destination_account_number: {
+                type: 'string',
+            },
+            destination_bank_code: {
+                type: 'string',
+            },
+            va_account: {
+                type: 'string',
+            },
+            status: {
+                type: 'string',
+                enum: ['Pending', 'Paid', 'Completed', 'Expired'],
             },
         },
     };

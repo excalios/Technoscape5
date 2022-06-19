@@ -18,6 +18,11 @@ export async function up(knex: Knex): Promise<void> {
         table.decimal('other_price');
         table.decimal('discount');
         table.decimal('total_price');
+        table.string('destination_account_name').nullable();
+        table.string('destination_account_number').nullable();
+        table.string('destination_bank_code').nullable();
+        table.string('va_account').nullable();
+        table.string('status').defaultTo('Pending');
         table.timestamps(true);
     });
 }
