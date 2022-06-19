@@ -89,7 +89,7 @@ export class Payer extends Model {
             },
             status: {
                 type: 'string',
-                enum: ['Pending', 'Paid', 'Completed', 'Expired'],
+                enum: ['pending', 'paid', 'completed', 'expired'],
             },
         },
     };

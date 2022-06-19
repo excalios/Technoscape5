@@ -293,6 +293,38 @@ paths:
                                             total_price:
                                                 type: string
 
+    /api/v1/brick/pay/{user_id}:
+        post:
+            description: mock finish payment for the specified user id
+            parameters:
+                - name: user_id
+                  in: path
+                  description: uuid of the user in the transaction
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Successfully created the cva
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    status:
+                                        type: number
+                                        example: 200
+                                    data:
+                                        type: object
+                                        properties:
+                                            user_id:
+                                                type: string
+                                            status:
+                                                type: string
+
 components:
     schemas:
         ApiResponse:

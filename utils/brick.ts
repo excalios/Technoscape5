@@ -3,10 +3,6 @@ import moment from 'moment';
 
 import 'dotenv/config';
 
-const brick = axios.create({
-    baseURL: process.env.BRICK_URL,
-});
-
 const brickAuthorized = axios.create({
     baseURL: process.env.BRICK_URL,
     headers: {
@@ -39,6 +35,21 @@ export async function generateCVA(
         });
 
         return res.data;
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+export async function mockPayCVO(cva_id: string) {
+    try {
+        const res = await brickAuthorized.post(
+            '/payments/close-va/status/' + cva_id,
+            {
+                action: 'paid',
+            },
+        );
+
+        return res;
     } catch (err) {
         console.error(err);
     }
