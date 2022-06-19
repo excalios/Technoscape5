@@ -29,7 +29,7 @@ export class Payer extends Model {
 
     va_account?: string;
 
-    status!: string;
+    status?: string;
 
     static tableName = tableNames.transaction_payer;
 

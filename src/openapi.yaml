@@ -116,11 +116,17 @@ paths:
                                     data:
                                         type: object
                                         properties:
+                                            id:
+                                                type: string
+                                            title:
+                                                type: string
                                             users:
                                                 type: array
                                                 items:
                                                     type: object
                                                     properties:
+                                                        id:
+                                                            type: string
                                                         name:
                                                             type: string
                                                         items:
@@ -144,6 +150,83 @@ paths:
                                                             type: number
                                                         total_price:
                                                             type: number
+
+    /api/v1/receipt/{uuid}:
+        get:
+            description: get a receipt detail that has been splited
+            parameters:
+                - name: uuid
+                  in: path
+                  description: uuid of the receipt
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Successfully return the receipt and details
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    status:
+                                        type: number
+                                        example: 200
+                                    data:
+                                        type: object
+                                        properties:
+                                            receipt:
+                                                type: object
+                                                properties:
+                                                    id:
+                                                        type: string
+                                                    title:
+                                                        type: string
+                                                    tax_price:
+                                                        type: number
+                                                    service_charge:
+                                                        type: number
+                                                    other_price:
+                                                        type: number
+                                                    discount:
+                                                        type: number
+                                                    total_price:
+                                                        type: number
+                                                    payers:
+                                                        type: array
+                                                        items:
+                                                            type: object
+                                                            properties:
+                                                                id:
+                                                                    type: string
+                                                                name:
+                                                                    type: string
+                                                                items:
+                                                                    type: array
+                                                                    items:
+                                                                        type: array
+                                                                        items:
+                                                                            type: object
+                                                                            properties:
+                                                                                id:
+                                                                                    type: string
+                                                                                name:
+                                                                                    type: string
+                                                                                price:
+                                                                                    type: number
+                                                                tax_price:
+                                                                    type: number
+                                                                service_charge:
+                                                                    type: number
+                                                                other_price:
+                                                                    type: number
+                                                                discount:
+                                                                    type: number
+                                                                total_price:
+                                                                    type: number
 
 components:
     schemas:

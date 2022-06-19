@@ -4,10 +4,12 @@ import app from '../../../src/app';
 require('dotenv').config();
 
 describe('Price Distribute Calculation', () => {
+    let receiptId: string;
     it('should respond proper distribution', done => {
         request(app)
             .post('/api/v1/receipt/calculate')
             .send({
+                title: 'Bukber',
                 users: ['Ravi', 'Edruz', 'Ditya', 'Tasya'],
                 items: [
                     {
@@ -38,14 +40,20 @@ describe('Price Distribute Calculation', () => {
             .end((err, res) => {
                 if (err) {
                     console.error({ err });
-                    console.error({ res });
+                    console.error({ res, body: res.body });
                     done(err);
                 }
 
                 expect(res.body.status).toBe(200);
                 expect(res.body.success).toBe(true);
+                expect(res.body.data.id.length).toBeGreaterThan(0);
+                receiptId = res.body.data.id;
+
+                expect(res.body.data.title).toBe('Bukber');
                 expect(res.body.data.users.length).toBe(4);
+                expect(res.body.data.users[0].id.length).toBeGreaterThan(0);
                 expect(res.body.data.users[0]).toMatchObject({
+                    id: expect.any(String),
                     name: 'Ravi',
                     items: [
                         {
@@ -63,6 +71,30 @@ describe('Price Distribute Calculation', () => {
                     discount: 3_000,
                     total_price: 21_000,
                 });
+                done();
+            });
+    });
+
+    it('should respond proper distribution (get)', done => {
+        request(app)
+            .get(`/api/v1/receipt/${receiptId}`)
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .end((err, res) => {
+                if (err) {
+                    console.error({ err });
+                    console.error({ res, body: res.body });
+                    done(err);
+                }
+
+                expect(res.body.status).toBe(200);
+                expect(res.body.success).toBe(true);
+                expect(res.body.data.receipt.id).toBe(receiptId);
+                expect(res.body.data.receipt.title).toBe('Bukber');
+                expect(res.body.data.receipt.payers.length).toBeGreaterThan(0);
+                expect(
+                    res.body.data.receipt.payers[0].items.length,
+                ).toBeGreaterThan(0);
                 done();
             });
     });
