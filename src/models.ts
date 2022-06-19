@@ -147,5 +147,51 @@ export class Payer extends Model {
                 to: `${tableNames.transaction}.id`,
             },
         },
+        items: {
+            relation: Model.HasManyRelation,
+            modelClass: 'Item',
+            join: {
+                from: `${tableNames.transaction_payer}.id`,
+                to: `${tableNames.payer_item}.payer_id`,
+            },
+        },
+    };
+}
+
+export class Item extends Model {
+    id!: string;
+
+    name!: string;
+
+    price!: number;
+
+    static tableName = tableNames.payer_item;
+
+    static jsonSchema = {
+        type: 'object',
+        additionalProperties: false,
+        required: ['name', 'price'],
+        properties: {
+            id: {
+                type: 'string',
+            },
+            name: {
+                type: 'string',
+            },
+            price: {
+                type: 'number',
+            },
+        },
+    };
+
+    static relationMappings: RelationMappings | RelationMappingsThunk = {
+        payer: {
+            relation: Model.BelongsToOneRelation,
+            modelClass: Payer,
+            join: {
+                from: `${tableNames.payer_item}.payer_id`,
+                to: `${tableNames.transaction_payer}.id`,
+            },
+        },
     };
 }
