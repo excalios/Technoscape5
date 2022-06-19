@@ -29,6 +29,8 @@ export class Payer extends Model {
 
     va_account?: string;
 
+    cva_id?: string;
+
     status?: string;
 
     static tableName = tableNames.transaction_payer;
@@ -80,6 +82,9 @@ export class Payer extends Model {
                 type: 'string',
             },
             va_account: {
+                type: 'string',
+            },
+            cva_id: {
                 type: 'string',
             },
             status: {

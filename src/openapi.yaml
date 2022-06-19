@@ -228,6 +228,71 @@ paths:
                                                                 total_price:
                                                                     type: number
 
+    /api/v1/receipt/{uuid}/pay/{user_id}/cva:
+        post:
+            description: user id payment with cva
+            parameters:
+                - name: uuid
+                  in: path
+                  description: uuid of the receipt
+                  required: true
+                  schema:
+                      type: string
+                - name: user_id
+                  in: path
+                  description: uuid of the user in the transaction
+                  required: true
+                  schema:
+                      type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                bankShortCode:
+                                    type: string
+                                destination_account_name:
+                                    type: string
+                                destination_account_number:
+                                    type: string
+                                destination_bank_code:
+                                    type: string
+            responses:
+                200:
+                    description: Successfully created the cva
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    status:
+                                        type: number
+                                        example: 200
+                                    data:
+                                        type: object
+                                        properties:
+                                            va_account:
+                                                type: string
+                                            display_name:
+                                                type: string
+                                            description:
+                                                type: string
+                                            destination_account_name:
+                                                type: string
+                                            destination_account_number:
+                                                type: string
+                                            destination_bank_code:
+                                                type: string
+                                            status:
+                                                type: string
+                                            total_price:
+                                                type: string
+
 components:
     schemas:
         ApiResponse:

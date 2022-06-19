@@ -3,7 +3,7 @@ import app from '../../../src/app';
 
 require('dotenv').config();
 
-describe('Price Distribute Calculation', () => {
+describe('Bill Splitter', () => {
     let receiptId: string;
     it('should respond proper distribution', done => {
         request(app)
@@ -75,6 +75,7 @@ describe('Price Distribute Calculation', () => {
             });
     });
 
+    let userId: string;
     it('should respond proper distribution (get)', done => {
         request(app)
             .get(`/api/v1/receipt/${receiptId}`)
@@ -95,7 +96,42 @@ describe('Price Distribute Calculation', () => {
                 expect(
                     res.body.data.receipt.payers[0].items.length,
                 ).toBeGreaterThan(0);
+                userId = res.body.data.receipt.payers[0].id;
                 done();
             });
     });
+
+    it('should respond proper distribution (get)', done => {
+        request(app)
+            .post(`/api/v1/receipt/${receiptId}/pay/${userId}/cva`)
+            .send({
+                bankShortCode: 'MANDIRI',
+                destination_account_name: 'Edruz',
+                destination_account_number: '310015832267',
+                destination_bank_code: 'MANDIRI',
+            })
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .end((err, res) => {
+                if (err) {
+                    console.error({ err });
+                    console.error({ res, body: res.body });
+                    done(err);
+                }
+
+                expect(res.body.status).toBe(200);
+                expect(res.body.success).toBe(true);
+                expect(res.body.data).toMatchObject({
+                    va_account: expect.any(String),
+                    display_name: expect.any(String),
+                    description: expect.any(String),
+                    destination_account_name: 'Edruz',
+                    destination_account_number: '310015832267',
+                    destination_bank_code: 'MANDIRI',
+                    status: 'pending',
+                    total_price: '21000.00',
+                });
+                done();
+            });
+    }, 10000);
 });

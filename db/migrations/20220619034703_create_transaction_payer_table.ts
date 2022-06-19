@@ -22,6 +22,7 @@ export async function up(knex: Knex): Promise<void> {
         table.string('destination_account_number').nullable();
         table.string('destination_bank_code').nullable();
         table.string('va_account').nullable();
+        table.string('cva_id').nullable();
         table.string('status').nullable();
         table.timestamps(true, true);
     });

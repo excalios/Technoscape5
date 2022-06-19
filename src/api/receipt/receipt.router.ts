@@ -3,6 +3,7 @@ import Router from 'express';
 import type { Request, Response, NextFunction } from 'express';
 import { Transaction } from '../../models/transaction.model';
 import { Payer } from '../../models/payer.model';
+import { generateCVA } from '../../../utils/brick';
 
 const router = Router();
 
@@ -14,10 +15,70 @@ router.get(
                 .findById(req.params.uuid)
                 .withGraphFetched('payers.items');
 
-            console.debug(receipt);
-
             res.success({
                 receipt,
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
+);
+
+router.post(
+    '/:uuid/pay/:user_id/cva',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const transaction = await Transaction.query().findById(
+                req.params.uuid,
+            );
+            if (!transaction) {
+                const err: Error = new Error('Transaction not found');
+                res.status(404);
+                throw err;
+            }
+
+            const user = await Payer.query().findById(req.params.user_id);
+            if (!user) {
+                const err: Error = new Error('User not found');
+                res.status(404);
+                throw err;
+            }
+
+            const expiredAt = new Date();
+            expiredAt.setHours(expiredAt.getHours() + 1);
+            const { data: cva } = await generateCVA(
+                user.id,
+                user.total_price,
+                'Pembayaran patungin ' +
+                    transaction.title +
+                    ' ' +
+                    transaction.id,
+                expiredAt,
+                req.body.bankShortCode,
+                `${transaction.title} - ${user.name}`,
+            );
+
+            user.va_account =
+                cva.attributes.paymentMethod.instructions.accountNo;
+            user.status = cva.attributes.status;
+            user.destination_account_name = req.body.destination_account_name;
+            user.destination_account_number =
+                req.body.destination_account_number;
+            user.destination_bank_code = req.body.destination_bank_code;
+            user.cva_id = cva.id;
+
+            await user.$query().updateAndFetch(user);
+
+            res.success({
+                va_account: user.va_account,
+                display_name:
+                    cva.attributes.paymentMethod.instructions.displayName,
+                description: cva.attributes.description,
+                destination_account_name: user.destination_account_name,
+                destination_account_number: user.destination_account_number,
+                destination_bank_code: user.destination_bank_code,
+                status: user.status,
+                total_price: user.total_price,
             });
         } catch (err) {
             next(err);
